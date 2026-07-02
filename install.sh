@@ -12,6 +12,12 @@ RXANDROID_FILE_VERSION="3.0.0"
 RXANDROID_PUBLISH_VERSION="v3.0.0"
 RXJAVA_FILE_VERSION="3.0.3"
 RXJAVA_PUBLISH_VERSION="v3.0.3"
+RXHTTP_FILE_VERSION="2.3.5"
+RXHTTP_PUBLISH_VERSION="2.3.5"
+RXHTTP_ANNOTATION_FILE_VERSION="1.0.1"
+RXHTTP_ANNOTATION_PUBLISH_VERSION="1.0.1"
+RXHTTP_COMPILER_FILE_VERSION="2.3.5"
+RXHTTP_COMPILER_PUBLISH_VERSION="2.3.5"
 
 rm -rf "${TMP_DIR}"
 mkdir -p "${TMP_DIR}"
@@ -135,6 +141,71 @@ POM
   write_pom_end "${pom_file}"
 }
 
+write_rxhttp_pom() {
+  local pom_file="$1"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxhttp" "${version}" "jar" "rxhttp2" "https://github.com/liujingxing/RxHttp"
+  cat >> "${pom_file}" <<POM
+  <dependencies>
+    <dependency>
+      <groupId>${GROUP_ID}</groupId>
+      <artifactId>rxhttp-annotation</artifactId>
+      <version>${RXHTTP_ANNOTATION_PUBLISH_VERSION}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-android</artifactId>
+      <version>1.3.4</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+POM
+  write_pom_end "${pom_file}"
+}
+
+write_rxhttp_annotation_pom() {
+  local pom_file="$1"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxhttp-annotation" "${version}" "jar" "rxhttp-annotation2" "https://github.com/liujingxing/RxHttp"
+  write_pom_end "${pom_file}"
+}
+
+write_rxhttp_compiler_pom() {
+  local pom_file="$1"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxhttp-compiler" "${version}" "jar" "rxhttp-compiler" "https://github.com/liujingxing/RxHttp"
+  cat >> "${pom_file}" <<POM
+  <dependencies>
+    <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>javapoet</artifactId>
+      <version>1.12.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>kotlinpoet</artifactId>
+      <version>1.5.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>${GROUP_ID}</groupId>
+      <artifactId>rxhttp-annotation</artifactId>
+      <version>${RXHTTP_ANNOTATION_PUBLISH_VERSION}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+POM
+  write_pom_end "${pom_file}"
+}
+
 install_main_artifact() {
   local artifact_id="$1"
   local version="$2"
@@ -190,3 +261,6 @@ install_module "rxlife-coroutine" "${RXLIFE_COROUTINE_PUBLISH_VERSION}" "${RXLIF
 install_module "rxlife-rxjava" "${RXLIFE_RXJAVA_PUBLISH_VERSION}" "${RXLIFE_RXJAVA_FILE_VERSION}" "aar" "${WORK_DIR}/artifacts/rxlife-rxjava" "write_rxlife_rxjava_pom"
 install_module "rxandroid" "${RXANDROID_PUBLISH_VERSION}" "${RXANDROID_FILE_VERSION}" "aar" "${WORK_DIR}/artifacts/rxandroid" "write_rxandroid_pom"
 install_module "rxjava" "${RXJAVA_PUBLISH_VERSION}" "${RXJAVA_FILE_VERSION}" "jar" "${WORK_DIR}/artifacts/rxjava" "write_rxjava_pom"
+install_module "rxhttp" "${RXHTTP_PUBLISH_VERSION}" "${RXHTTP_FILE_VERSION}" "jar" "${WORK_DIR}/artifacts/rxhttp" "write_rxhttp_pom"
+install_module "rxhttp-annotation" "${RXHTTP_ANNOTATION_PUBLISH_VERSION}" "${RXHTTP_ANNOTATION_FILE_VERSION}" "jar" "${WORK_DIR}/artifacts/rxhttp-annotation" "write_rxhttp_annotation_pom"
+install_module "rxhttp-compiler" "${RXHTTP_COMPILER_PUBLISH_VERSION}" "${RXHTTP_COMPILER_FILE_VERSION}" "jar" "${WORK_DIR}/artifacts/rxhttp-compiler" "write_rxhttp_compiler_pom"
