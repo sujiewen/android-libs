@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.sujiewen.android-libs</groupId>
   <artifactId>rxjava</artifactId>
-  <version>v3.0.3</version>
+  <version>3.0.3</version>
   <packaging>jar</packaging>
   <name>RxJava</name>
   <url>https://github.com/ReactiveX/RxJava</url>
@@ -16,12 +16,11 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <dependencies>
-    <dependency>
-      <groupId>org.reactivestreams</groupId>
-      <artifactId>reactive-streams</artifactId>
-      <version>1.0.3</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
+  <distributionManagement>
+    <relocation>
+      <groupId>io.reactivex.rxjava3</groupId>
+      <artifactId>rxjava</artifactId>
+      <version>3.0.3</version>
+    </relocation>
+  </distributionManagement>
 </project>

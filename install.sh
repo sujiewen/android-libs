@@ -5,13 +5,15 @@ GROUP_ID="${GROUP_ID:-com.github.sujiewen.android-libs}"
 WORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 TMP_DIR="${WORK_DIR}/.jitpack-tmp"
 RXLIFE_COROUTINE_FILE_VERSION="2.0.0"
-RXLIFE_COROUTINE_PUBLISH_VERSION="v2.0.0"
+RXLIFE_COROUTINE_PUBLISH_VERSION="2.0.0"
 RXLIFE_RXJAVA_FILE_VERSION="3.0.0"
-RXLIFE_RXJAVA_PUBLISH_VERSION="v3.0.0"
+RXLIFE_RXJAVA_PUBLISH_VERSION="3.0.0"
 RXANDROID_FILE_VERSION="3.0.0"
-RXANDROID_PUBLISH_VERSION="v3.0.0"
+RXANDROID_PUBLISH_VERSION="3.0.0"
+RXANDROID_ORIGINAL_VERSION="3.0.0"
 RXJAVA_FILE_VERSION="3.0.3"
-RXJAVA_PUBLISH_VERSION="v3.0.3"
+RXJAVA_PUBLISH_VERSION="3.0.3"
+RXJAVA_ORIGINAL_VERSION="3.0.3"
 RXHTTP_FILE_VERSION="2.3.5"
 RXHTTP_PUBLISH_VERSION="2.3.5"
 RXHTTP_ANNOTATION_FILE_VERSION="1.0.1"
@@ -58,6 +60,23 @@ write_pom_end() {
 
   cat >> "${pom_file}" <<'POM'
 </project>
+POM
+}
+
+write_relocation() {
+  local pom_file="$1"
+  local group_id="$2"
+  local artifact_id="$3"
+  local version="$4"
+
+  cat >> "${pom_file}" <<POM
+  <distributionManagement>
+    <relocation>
+      <groupId>${group_id}</groupId>
+      <artifactId>${artifact_id}</artifactId>
+      <version>${version}</version>
+    </relocation>
+  </distributionManagement>
 POM
 }
 
@@ -111,16 +130,7 @@ write_rxandroid_pom() {
   local pom_file="$1"
   local version="$2"
   write_pom_start "${pom_file}" "rxandroid" "${version}" "aar" "RxAndroid" "https://github.com/ReactiveX/RxAndroid"
-  cat >> "${pom_file}" <<POM
-  <dependencies>
-    <dependency>
-      <groupId>${GROUP_ID}</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>${RXJAVA_PUBLISH_VERSION}</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-POM
+  write_relocation "${pom_file}" "io.reactivex.rxjava3" "rxandroid" "${RXANDROID_ORIGINAL_VERSION}"
   write_pom_end "${pom_file}"
 }
 
@@ -128,16 +138,7 @@ write_rxjava_pom() {
   local pom_file="$1"
   local version="$2"
   write_pom_start "${pom_file}" "rxjava" "${version}" "jar" "RxJava" "https://github.com/ReactiveX/RxJava"
-  cat >> "${pom_file}" <<'POM'
-  <dependencies>
-    <dependency>
-      <groupId>org.reactivestreams</groupId>
-      <artifactId>reactive-streams</artifactId>
-      <version>1.0.3</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-POM
+  write_relocation "${pom_file}" "io.reactivex.rxjava3" "rxjava" "${RXJAVA_ORIGINAL_VERSION}"
   write_pom_end "${pom_file}"
 }
 
