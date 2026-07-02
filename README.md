@@ -11,7 +11,7 @@ Local mirror artifacts for the warehouse app.
 | `com.github.sujiewen.android-libs:rxandroid:v3.0.0` | `io.reactivex.rxjava3:rxandroid:3.0.0` |
 | `com.github.sujiewen.android-libs:rxjava:v3.0.3` | `io.reactivex.rxjava3:rxjava:3.0.3` |
 | `com.github.sujiewen.android-libs:rxhttp:2.3.5` | `com.ljx.rxhttp:rxhttp:2.3.5` |
-| `com.github.sujiewen.android-libs:rxhttp-annotation:1.0.1` | `com.ljx.rxhttp:rxhttp-annotation:1.0.1` |
+| `com.github.sujiewen.android-libs:rxhttp-annotation:2.3.5` | `com.ljx.rxhttp:rxhttp-annotation:1.0.1` |
 | `com.github.sujiewen.android-libs:rxhttp-compiler:2.3.5` | `com.ljx.rxhttp:rxhttp-compiler:2.3.5` |
 
 `rxjava:3.0.2` was not present as a complete local artifact on this Mac, so this mirror uses the available `3.0.3` artifact.

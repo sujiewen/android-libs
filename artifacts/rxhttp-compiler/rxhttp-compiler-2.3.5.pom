@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.github.sujiewen.android-libs</groupId>
       <artifactId>rxhttp-annotation</artifactId>
-      <version>1.0.1</version>
+      <version>2.3.5</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
