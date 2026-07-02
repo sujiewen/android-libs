@@ -4,6 +4,14 @@ set -euo pipefail
 GROUP_ID="${GROUP_ID:-com.github.sujiewen.android-libs}"
 WORK_DIR="$(cd "$(dirname "$0")" && pwd)"
 TMP_DIR="${WORK_DIR}/.jitpack-tmp"
+RXLIFE_COROUTINE_FILE_VERSION="2.0.0"
+RXLIFE_COROUTINE_PUBLISH_VERSION="v2.0.0"
+RXLIFE_RXJAVA_FILE_VERSION="3.0.0"
+RXLIFE_RXJAVA_PUBLISH_VERSION="v3.0.0"
+RXANDROID_FILE_VERSION="3.0.0"
+RXANDROID_PUBLISH_VERSION="v3.0.0"
+RXJAVA_FILE_VERSION="3.0.3"
+RXJAVA_PUBLISH_VERSION="v3.0.3"
 
 rm -rf "${TMP_DIR}"
 mkdir -p "${TMP_DIR}"
@@ -49,7 +57,8 @@ POM
 
 write_rxlife_coroutine_pom() {
   local pom_file="$1"
-  write_pom_start "${pom_file}" "rxlife-coroutine" "2.0.0" "aar" "rxlife-coroutine" "https://github.com/liujingxing/RxLife"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxlife-coroutine" "${version}" "aar" "rxlife-coroutine" "https://github.com/liujingxing/RxLife"
   cat >> "${pom_file}" <<'POM'
   <dependencies>
     <dependency>
@@ -71,7 +80,8 @@ POM
 
 write_rxlife_rxjava_pom() {
   local pom_file="$1"
-  write_pom_start "${pom_file}" "rxlife-rxjava" "3.0.0" "aar" "rxlife3" "https://github.com/liujingxing/RxLife"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxlife-rxjava" "${version}" "aar" "rxlife3" "https://github.com/liujingxing/RxLife"
   cat >> "${pom_file}" <<'POM'
   <dependencies>
     <dependency>
@@ -93,13 +103,14 @@ POM
 
 write_rxandroid_pom() {
   local pom_file="$1"
-  write_pom_start "${pom_file}" "rxandroid" "3.0.0" "aar" "RxAndroid" "https://github.com/ReactiveX/RxAndroid"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxandroid" "${version}" "aar" "RxAndroid" "https://github.com/ReactiveX/RxAndroid"
   cat >> "${pom_file}" <<POM
   <dependencies>
     <dependency>
       <groupId>${GROUP_ID}</groupId>
       <artifactId>rxjava</artifactId>
-      <version>3.0.3</version>
+      <version>${RXJAVA_PUBLISH_VERSION}</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -109,7 +120,8 @@ POM
 
 write_rxjava_pom() {
   local pom_file="$1"
-  write_pom_start "${pom_file}" "rxjava" "3.0.3" "jar" "RxJava" "https://github.com/ReactiveX/RxJava"
+  local version="$2"
+  write_pom_start "${pom_file}" "rxjava" "${version}" "jar" "RxJava" "https://github.com/ReactiveX/RxJava"
   cat >> "${pom_file}" <<'POM'
   <dependencies>
     <dependency>
@@ -156,22 +168,25 @@ install_classifier_artifact() {
 
 install_module() {
   local artifact_id="$1"
-  local version="$2"
-  local packaging="$3"
-  local base_dir="$4"
-  local writer="$5"
-  local main_file="${base_dir}/${artifact_id}-${version}.${packaging}"
-  local sources_file="${base_dir}/${artifact_id}-${version}-sources.jar"
-  local javadoc_file="${base_dir}/${artifact_id}-${version}-javadoc.jar"
-  local pom_file="${TMP_DIR}/${artifact_id}-${version}.pom"
+  local publish_version="$2"
+  local file_version="$3"
+  local packaging="$4"
+  local base_dir="$5"
+  local writer="$6"
+  local main_file="${base_dir}/${artifact_id}-${file_version}.${packaging}"
+  local sources_file="${base_dir}/${artifact_id}-${file_version}-sources.jar"
+  local javadoc_file="${base_dir}/${artifact_id}-${file_version}-javadoc.jar"
+  local pom_file="${TMP_DIR}/${artifact_id}-${publish_version}.pom"
+  local published_pom_file="${base_dir}/${artifact_id}-${file_version}.pom"
 
-  "${writer}" "${pom_file}"
-  install_main_artifact "${artifact_id}" "${version}" "${packaging}" "${main_file}" "${pom_file}"
-  install_classifier_artifact "${artifact_id}" "${version}" "sources" "${sources_file}"
-  install_classifier_artifact "${artifact_id}" "${version}" "javadoc" "${javadoc_file}"
+  "${writer}" "${pom_file}" "${publish_version}"
+  cp "${pom_file}" "${published_pom_file}"
+  install_main_artifact "${artifact_id}" "${publish_version}" "${packaging}" "${main_file}" "${pom_file}"
+  install_classifier_artifact "${artifact_id}" "${publish_version}" "sources" "${sources_file}"
+  install_classifier_artifact "${artifact_id}" "${publish_version}" "javadoc" "${javadoc_file}"
 }
 
-install_module "rxlife-coroutine" "2.0.0" "aar" "${WORK_DIR}/artifacts/rxlife-coroutine" "write_rxlife_coroutine_pom"
-install_module "rxlife-rxjava" "3.0.0" "aar" "${WORK_DIR}/artifacts/rxlife-rxjava" "write_rxlife_rxjava_pom"
-install_module "rxandroid" "3.0.0" "aar" "${WORK_DIR}/artifacts/rxandroid" "write_rxandroid_pom"
-install_module "rxjava" "3.0.3" "jar" "${WORK_DIR}/artifacts/rxjava" "write_rxjava_pom"
+install_module "rxlife-coroutine" "${RXLIFE_COROUTINE_PUBLISH_VERSION}" "${RXLIFE_COROUTINE_FILE_VERSION}" "aar" "${WORK_DIR}/artifacts/rxlife-coroutine" "write_rxlife_coroutine_pom"
+install_module "rxlife-rxjava" "${RXLIFE_RXJAVA_PUBLISH_VERSION}" "${RXLIFE_RXJAVA_FILE_VERSION}" "aar" "${WORK_DIR}/artifacts/rxlife-rxjava" "write_rxlife_rxjava_pom"
+install_module "rxandroid" "${RXANDROID_PUBLISH_VERSION}" "${RXANDROID_FILE_VERSION}" "aar" "${WORK_DIR}/artifacts/rxandroid" "write_rxandroid_pom"
+install_module "rxjava" "${RXJAVA_PUBLISH_VERSION}" "${RXJAVA_FILE_VERSION}" "jar" "${WORK_DIR}/artifacts/rxjava" "write_rxjava_pom"

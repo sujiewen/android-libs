@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.sujiewen.android-libs</groupId>
   <artifactId>rxlife-coroutine</artifactId>
-  <version>2.0.0</version>
+  <version>v2.0.0</version>
   <packaging>aar</packaging>
   <name>rxlife-coroutine</name>
   <url>https://github.com/liujingxing/RxLife</url>

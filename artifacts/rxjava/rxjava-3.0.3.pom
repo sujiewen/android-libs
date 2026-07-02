@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.sujiewen.android-libs</groupId>
   <artifactId>rxjava</artifactId>
-  <version>3.0.3</version>
+  <version>v3.0.3</version>
   <packaging>jar</packaging>
   <name>RxJava</name>
   <url>https://github.com/ReactiveX/RxJava</url>

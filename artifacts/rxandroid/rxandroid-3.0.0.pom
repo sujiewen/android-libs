@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.sujiewen.android-libs</groupId>
   <artifactId>rxandroid</artifactId>
-  <version>3.0.0</version>
+  <version>v3.0.0</version>
   <packaging>aar</packaging>
   <name>RxAndroid</name>
   <url>https://github.com/ReactiveX/RxAndroid</url>
@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.github.sujiewen.android-libs</groupId>
       <artifactId>rxjava</artifactId>
-      <version>3.0.3</version>
+      <version>v3.0.3</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
